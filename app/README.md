@@ -31,17 +31,22 @@ The seven built-in examples (`app/examples.json`) are held out of training, so t
 
 1. **Real photo: York Urban corridor.** Two directions give 649 and 713 px; the true calibrated
    focal length is 675 px. Low score.
-2. **AI image (Gemini): classroom.** Directions disagree by 94 per cent. High score.
-3. **AI image (ChatGPT): lecture hall.** Lands in "unclear". ChatGPT is the hardest generator for
-   this method (AUC about 0.6), which matches the report.
-4. **AI image (Gemini) that fools the check.** Its directions agree within 1 per cent. Show this on
+2. **Real photo: angled street corner.** Its directions are far from right angles (a 70 degree
+   error), yet the score stays low, because every horizontal direction still agrees on one focal
+   length. This is why the main measure works on angled streets.
+3. **AI image (Gemini): classroom.** Directions disagree by 94 per cent. High score.
+4. **AI image (ChatGPT): lecture hall.** Two of its three direction pairs imply a focal length no
+   camera could have, yet it only lands in "unclear" (about 60 per cent). ChatGPT is the hardest
+   generator for this method (AUC about 0.6).
+5. **AI image (Gemini) that fools the check.** Its directions agree within 1 per cent. Show this on
    purpose: it is a geometry check, not proof.
-5. **Image the check cannot measure.** Explain the applicability rule: no verdict rather than a guess.
-6. **Upload an image from the audience** (a corridor or building works best).
+6. **Image the check cannot measure.** Explain the applicability rule: no verdict rather than a guess.
+7. **Upload an image from the audience** (a corridor or building works best).
 
 ## What to say about the percentage
 
 "If the image were equally likely to be real or AI before we looked, the geometry makes AI this
 likely." It is calibrated on the images we tested, so an unfamiliar generator or an unusual
-camera can fool it. Overall cross-validated AUC is about 0.77; on a generator it never saw in
-training, 0.63 to 0.81 (Flux and ChatGPT are the hardest).
+camera can fool it. Images are measured at their own width up to 1024 px. Overall cross-validated
+AUC is about 0.82; on a generator it never saw in training, 0.59 to 0.88 (ChatGPT and Flux are the
+hardest).

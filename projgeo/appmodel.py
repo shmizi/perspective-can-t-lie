@@ -20,6 +20,15 @@ from sklearn.pipeline import Pipeline
 from .explain import FEATURES
 
 MODEL_PATH = Path(__file__).resolve().parents[1] / "models" / "app_model.joblib"
+# The app measures each image at its own width, capped at 1024 px and never enlarged.  The report's
+# group comparisons use 640 px to match York Urban; for scoring single images the extra line
+# detail matters more: cross-validated AUC 0.77 at 640 px, 0.81 with this cap, and image width
+# alone scores 0.52, so the gain is not a resolution shortcut.
+APP_MAX_WIDTH = 1024
+
+
+def analysis_width(img) -> int:
+    return min(img.shape[1], APP_MAX_WIDTH)
 
 
 def make_model(seed: int = 0):

@@ -63,9 +63,11 @@ Every result holds when only clearly tilted cameras are kept and when the vertic
 required to be far from the image centre (`scripts/vertical_guard_sensitivity.py`).
 
 **Demo app score.** A calibrated random forest on the 10 geometry measurements only (it never
-sees pixels), trained on two real sets and five generators: 5-fold cross-validated AUC 0.77. On a
-generator held out of training the AUC is 0.63 to 0.81, with Flux and ChatGPT the hardest. Other
-classifiers on the same features do no better (0.74 to 0.77), and image shape
+sees pixels), trained on two real sets and five generators, with each image measured at its own
+width up to 1024 px: 5-fold cross-validated AUC 0.82. On a generator held out of training the AUC
+is 0.59 to 0.88, with ChatGPT and Flux the hardest. Measuring at 640 px instead gives 0.77; image
+width alone scores 0.52, so the gain is extra line detail, not a resolution shortcut. Other
+classifiers on the same features do no better, and image shape
 is deliberately left out because it is a dataset shortcut. Full evaluation:
 [results/app_model_report.md](results/app_model_report.md) and
 [results/app_model_comparison.md](results/app_model_comparison.md).

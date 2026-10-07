@@ -58,7 +58,7 @@ def analyse(data: bytes):
     if img is None:
         return None
     h, w = img.shape[:2]
-    ex = explain(img)
+    ex = explain(img, match_width=appmodel.analysis_width(img))
     ex["orig_size"] = (w, h)
     ex["uncropped"] = looks_uncropped(w, h)
     return ex

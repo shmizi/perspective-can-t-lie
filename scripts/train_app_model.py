@@ -26,7 +26,7 @@ from sklearn.metrics import brier_score_loss, roc_auc_score
 from sklearn.model_selection import StratifiedKFold
 from tqdm import tqdm
 
-from projgeo.appmodel import MODEL_PATH, feature_matrix, make_model, rebase
+from projgeo.appmodel import MODEL_PATH, analysis_width, feature_matrix, make_model, rebase
 from projgeo.datasets.folder import image_files
 from projgeo.datasets.yorkurban import YorkUrban
 from projgeo.explain import FEATURES, explain
@@ -50,18 +50,18 @@ HELD_OUT = {(e["set"], e["file"]) for e in json.loads(Path("app/examples.json").
 def images(src):
     if src == "yorkurban":
         for im in YorkUrban("data/real/YorkUrbanDB"):
-            yield im.name, im.image, None
+            yield im.name, im.image
         return
     for p in image_files(src):
-        yield p.name, cv2.imread(str(p)), 640
+        yield p.name, cv2.imread(str(p))
 
 
 def compute_features():
     rows = []
     for name, (src, is_ai, disp) in SETS.items():
         items = list(images(src))
-        for fname, img, mw in tqdm(items, desc=name):
-            ex = explain(img, match_width=mw)
+        for fname, img in tqdm(items, desc=name):
+            ex = explain(img, match_width=analysis_width(img))
             row = {"set": name, "path": fname, "is_ai": is_ai, "model": disp,
                    "admitted": ex["admitted"], "vert_dist_h": ex["vert_dist_h"]}
             if ex["features"]:
